@@ -2,8 +2,13 @@
 """
 Created on Sat Aug  5 18:49:29 2023
 
-@author: User
+@author: SergeyHSE
 """
+
+#########################################################################################
+#  Here we will use different algorithms of the "Unsupervised Learning" method on       #
+#  the classification data of plant leaves, as well as on the data from sklearn library.#
+#########################################################################################
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,9 +16,11 @@ import pandas as pd
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
-path = r"C:\Users\User\Documents\pyton-projects\spider\Машинное обучение\Learning without teacher\data_Mar_64.txt"
+path = r"your path"
 path = path.replace('\\', '/')
 data = pd.read_csv(path, header=None)
+
+#The first column is the answer, let's put it in a separate variable
 
 X, y_name = np.array(data.iloc[:, 1:]), data.iloc[:, 0]
 
