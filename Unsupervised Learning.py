@@ -47,6 +47,11 @@ X.shape
 y = y[:240]
 y.shape
 
+#Select objects that correspond to values from 0 to 14 of the target variable y.
+#Draw the selected objects in a two-dimensional feature space using the scatter
+#method from matplotlib.pyplot. To display objects of different classes in
+#different colors, pass c = y[y<15] to the scatter method.
+
 #Using the PCA method, reduce the dimension of the feature space to two.
 
 from sklearn.decomposition import PCA
@@ -54,39 +59,42 @@ from sklearn.decomposition import PCA
 pca = PCA(n_components=2, random_state=0)
 pca_fit = pca.fit_transform(X)
 
-plt.figure(figsize=(16, 16))
-plt.scatter(pca_fit[:, 0], pca_fit[:, 1], c=y[y<15])
+plt.figure(figsize=(10, 10), dpi=300)
+plt.scatter(pca_fit[:, 0], pca_fit[:, 1], c=y[y<15], cmap='tab20')
 plt.colorbar()
 plt.title('PCA CLASTERS')
 plt.show()
 
 pca_fit[0]
 
-#Select objects that correspond to values from 0 to 14 of the target variable y.
-#Draw the selected objects in a two-dimensional feature space using the scatter
-#method from matplotlib.pyplot. To display objects of different classes in
-#different colors, pass c = y[y<15] to the scatter method.
+#we are gonna make the same operations by TNSE
+
 
 from sklearn.manifold import TSNE
 tsne = TSNE(n_components=2, random_state=0)
 tsne_fit = tsne.fit_transform(X)
 
-plt.figure(figsize=(16, 16))
-plt.scatter(tsne_fit[:, 0], tsne_fit[:, 1], c=y[y<15])
+plt.figure(figsize=(10, 10), dpi=300)
+plt.scatter(tsne_fit[:, 0], tsne_fit[:, 1], c=y[y<15], cmap='tab20')
 plt.title('t-SNE Clasters')
 plt.colorbar()
 plt.show()
 
-#we are gonna make the same operations by TNSE
+#On this figure we see more distance between clasters
 
 tsne_fit[0]
 
 tsne3 = TSNE(n_components=3, random_state=0)
 tsne_fit = tsne3.fit_transform(X)
 
-fig = plt.figure()
+from mpl_toolkits.mplot3d import Axes3D
+
+fig = plt.figure(figsize=(10, 10), dpi=300)
 ax = fig.add_subplot(111, projection='3d')
-plt.scatter(tsne_fit[:, 0], tsne_fit[:, 1], tsne_fit[:, 2], c=y)
+colormap = plt.get_cmap('tab20')
+scatter = ax.scatter(tsne_fit[:, 0], tsne_fit[:, 1], tsne_fit[:, 2], c=y, cmap=colormap, s=30, alpha=0.6)
+cbar = plt.colorbar(scatter)
+plt.title('t-SNE with 3 components')
 plt.show()
 
 ##########################################################################
@@ -140,7 +148,8 @@ kmean_pred1 = kmeans1.predict(X)
 
 kmean_pred1[1]
 
-plt.scatter(X[:, 0], X[:, 1], c=kmean_pred1)
+plt.figure(figsize=(10, 10), dpi=300)
+plt.scatter(X[:, 0], X[:, 1], c=kmean_pred1, cmap='tab20')
 plt.title('K-means')
 plt.show()
 
@@ -151,9 +160,12 @@ kmeans_fit = kmeans.fit(X)
 kmean_pred = kmeans.predict(X)
 kmean_pred[1]
 
-plt.scatter(X[:, 0], X[:, 1], c=kmean_pred)
-plt.title('K-means')
+plt.figure(figsize=(10, 10), dpi=300)
+plt.scatter(X[:, 0], X[:, 1], c=kmean_pred, cmap='tab20')
+plt.title('K-means 5 iterations')
 plt.show()
+
+#We see small changes on figure in training with a significant reduction in the number of iterations
 
 #Calculate how many objects have the label of the predicted cluster
 #changed when changing the n_iters hyperparameter from 5 to 100
@@ -188,3 +200,8 @@ n_noise_ = list(labels).count(-1)
 
 n_clusters_ 
 n_noise_
+
+plt.figure(figsize=(10, 10), dpi=300)
+sct = plt.scatter(X[:, 0], X[:, 1], c=dbscan_pred, cmap='tab20')
+plt.colorbar(sct)
+plt.title('DBSCAN')
